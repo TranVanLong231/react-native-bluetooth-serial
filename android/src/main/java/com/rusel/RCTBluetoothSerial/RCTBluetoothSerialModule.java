@@ -58,7 +58,7 @@ public class RCTBluetoothSerialModule extends ReactContextBaseJavaModule impleme
     private Promise mConnectedPromise;
     private Promise mDeviceDiscoveryPromise;
     private Promise mPairDevicePromise;
-    private String delimiter = "";
+    private String delimiter = "]";
 
     public RCTBluetoothSerialModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -487,6 +487,11 @@ public class RCTBluetoothSerialModule extends ReactContextBaseJavaModule impleme
 
     private String readUntil(String delimiter) {
         String data = "";
+        if(delimiter == "") {
+        data = mBuffer.toString();
+        mBuffer.delete(0, mBuffer.length());
+        return data;
+    }
         int index = mBuffer.indexOf(delimiter, 0);
         if (index > -1) {
             data = mBuffer.substring(0, index + delimiter.length());
